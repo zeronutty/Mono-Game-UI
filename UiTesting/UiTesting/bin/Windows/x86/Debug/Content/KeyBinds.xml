@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<ArrayOfAction xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Action>
+    <ActionName>Open Console</ActionName>
+    <KeyboardBinds>
+      <Bind>Oem8</Bind>
+    </KeyboardBinds>
+  </Action>
+  <Action>
+    <ActionName>FuckIt</ActionName>
+    <KeyboardBinds>
+      <Bind>B</Bind>
+    </KeyboardBinds>
+  </Action>
+</ArrayOfAction>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SourceFile>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Videos/Test.mp4</SourceFile>
+  <SourceTime>2018-03-23T13:51:24.5482708+00:00</SourceTime>
+  <DestFile>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/bin/Windows/Videos/Test.xnb</DestFile>
+  <DestTime>2018-03-29T16:05:57.6687648+01:00</DestTime>
+  <Importer>H264Importer</Importer>
+  <ImporterTime>2017-03-01T15:05:36+00:00</ImporterTime>
+  <Processor>VideoProcessor</Processor>
+  <ProcessorTime>2017-03-01T15:05:36+00:00</ProcessorTime>
+  <Dependencies />
+  <BuildAsset />
+  <BuildOutput>
+    <string>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/bin/Windows/Videos/Test.mp4</string>
+  </BuildOutput>
+</PipelineBuildEvent>

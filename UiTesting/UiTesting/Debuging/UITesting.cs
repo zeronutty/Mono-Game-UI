@@ -237,7 +237,7 @@ namespace UiTesting.Debuging
             //};
 
             Button button = new Button(DebugButtonProps);
-            button.OnClick = (Entity btn) => { userInterface.DebugMode = !userInterface.DebugMode; userInterface.OpenClosePropPanel(userInterface.p_testform.Visible); };
+            //button.OnClick = (Entity btn) => { userInterface.DebugMode = !userInterface.DebugMode; userInterface.OpenClosePropPanel(userInterface.p_testform.Visible); };
             userInterface.AddChildToRoot(button);
 
             //PanelTopBar panelTopBar = new PanelTopBar(PanelTopBarTestProps);

@@ -5,6 +5,8 @@ using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
+using UiTesting.Source.Data;
+using UiTesting.Source.Event;
 using UiTesting.Source.Input;
 using static UiTesting.Source.UiManager;
 
@@ -45,9 +47,27 @@ namespace UiTesting.Source
     }
     #endregion
 
+    public class GamePadActions
+    {
+        public GamePadButton Click = GamePadButton.A;
+        public GamePadButton Press = GamePadButton.Y;
+        public GamePadButton Left = GamePadButton.LeftStickLeft;
+        public GamePadButton Right = GamePadButton.LeftStickRight;
+        public GamePadButton Up = GamePadButton.LeftStickUp;
+        public GamePadButton Down = GamePadButton.LeftStickDown;
+        public GamePadButton NextControl = GamePadButton.RightShoulder;
+        public GamePadButton PrevControl = GamePadButton.LeftShoulder;
+        public GamePadButton ContextMenu = GamePadButton.X;
+    }
+
     public class Entity : IDisposable
     {
         #region Fields
+
+        internal static List<Entity> Stack = new List<Entity>();
+
+        private UiManager p_UiManager = null;
+
         internal bool p_HiddenInternalEntity = false;
 
         private string p_Name;
@@ -141,9 +161,33 @@ namespace UiTesting.Source
 
         public Point ExtraMargin = Point.Zero;
 
+        private bool p_CanFocus = true;
+        private bool p_Enabled = true;
+        private bool p_Passive = false;
+        private bool p_Invalidated = true;
+        private bool p_Hovered = false;
+        private bool p_IsMoving = false;
+        private bool[] p_Pressed = new bool[32];
+        private bool p_Suspended = false;
+        private bool p_Inside = false;
+
+        private Entity p_Root = null;
+
+        private bool p_IsRoot = false;
+
+        private bool p_StayOnTop = false;
+        private bool p_StayOnBack = false;
+
+        private GamePadActions p_GamePadActions = new GamePadActions();
+
+
+  
         #endregion
 
         #region Properties
+
+        public UiManager UiManager { get { return p_UiManager; } set { p_UiManager = value; } }
+
         public string Name { get { return p_Name; } set { p_Name = value; } }
 
         public EntityState State { get { return p_State; } set { p_State = value; } }
@@ -207,6 +251,14 @@ namespace UiTesting.Source
 
         public Rectangle InternalDrawArea { get { return p_InternalDrawArea; } }
 
+        public int Top { get { return p_DrawArea.Top; } }
+        public int Bottom { get { return p_DrawArea.Bottom; } }
+        public int Left { get { return p_DrawArea.Left; } }
+        public int Right { get { return p_DrawArea.Right; } }
+
+        public int Height { get { return p_DrawArea.Height; } }
+        public int Width { get { return p_DrawArea.Width; } }
+
         public bool DrawExternally { get { return p_DrawExternally; } set { p_DrawExternally = value; } }
 
         public bool DrawingExternally { get; set; }
@@ -221,12 +273,45 @@ namespace UiTesting.Source
 
         public Rectangle ChildernsBounds { get => p_ChildernsBounds; set => p_ChildernsBounds = value; }
 
+        public bool CanFocus { get { return p_CanFocus; } set { p_CanFocus = value; } }
+        public bool Enabled { get { return p_Enabled; } set { p_Enabled = value; } }
+        public bool Passive { get { return p_Passive; } set { p_Passive = value; } }
+
+        public bool IsRoot { get { return p_IsRoot; } }
+
+        public Entity Root { get { return p_Root; } }
+
+        public bool StayOnTop { get { return p_StayOnTop; } set { p_StayOnTop = value; } }
+        public bool StayOnBack { get { return p_StayOnBack; } set { p_StayOnBack = value; } }
+
+        public GamePadActions GamePadActions { get { return p_GamePadActions; } }
+
+        public virtual bool Suspended { get { return p_Suspended; } set { p_Suspended = value; } }
+
+        internal protected virtual bool Hovered { get { return p_Hovered; } }
+        internal protected virtual bool Inside { get { return p_Inside; } }
+        internal protected virtual bool[] Pressed { get { return p_Pressed; } }
+
+        protected virtual bool IsMoving { get { return p_IsMoving; } set { p_IsMoving = value; } }
+
+        internal protected virtual bool IsPressed
+        {
+            get
+            {
+                for (int i = 0;i< p_Pressed.Length-1;i++)
+                {
+                    if (p_Pressed[i]) return true;
+                }
+                return false;
+            }
+        }
+
         #endregion
 
         #region Events
 
         #region EventCallBacks
-        public EventCallback OnMouseDown = null;
+        public EventCallback OnMouseDown2 = null;
 
         public EventCallback OnMouseReleased = null;
 
@@ -234,7 +319,7 @@ namespace UiTesting.Source
 
         public EventCallback WhileMouseHover = null;
 
-        public EventCallback OnClick = null;
+        public EventCallback OnClick2 = null;
 
         public EventCallback OnValueChange = null;
 
@@ -267,7 +352,7 @@ namespace UiTesting.Source
 
         virtual protected void DoOnMouseDown()
         {
-            OnMouseDown?.Invoke(this);
+            OnMouseDown2?.Invoke(this);
             GetActiveUserInterface().OnMouseDown?.Invoke(this);
         }
 
@@ -279,7 +364,7 @@ namespace UiTesting.Source
 
         virtual protected void DoOnClick()
         {
-            OnClick?.Invoke(this);
+            OnClick2?.Invoke(this);
             GetActiveUserInterface().OnClick?.Invoke(this);
         }
 
@@ -381,6 +466,205 @@ namespace UiTesting.Source
         }
 
         #endregion
+
+        public event EventHandler Click;
+        public event EventHandler DoubleClick;
+        public event MouseEventHandler MouseDown;
+        public event MouseEventHandler MousePress;
+        public event MouseEventHandler MouseUp;
+        public event MouseEventHandler MouseMove;
+        public event MouseEventHandler MouseOver;
+        public event MouseEventHandler MouseOut;
+        public event MouseEventHandler MouseScroll;
+        public event KeyEventHandler KeyDown;
+        public event KeyEventHandler KeyPress;
+        public event KeyEventHandler KeyUp;
+        public event GamePadEventHandler GamePadDown;
+        public event GamePadEventHandler GamePadUp;
+        public event GamePadEventHandler GamePadPress;
+        public event EventHandler MoveBegin;
+        public event EventHandler MoveEnd;
+        public event EventHandler ResizeBegin;
+        public event EventHandler ResizeEnd;
+        public event EventHandler ColorChanged;
+        public event EventHandler TextColorChanged;
+        public event EventHandler BackColorChanged;
+        public event EventHandler TextChanged;
+        public event EventHandler AnchorChanged;
+        public event EventHandler SkinChanging;
+        public event EventHandler SkinChanged;
+        public event EventHandler ParentChanged;
+        public event EventHandler RootChanged;
+        public event EventHandler VisibleChanged;
+        public event EventHandler EnabledChanged;
+        public event EventHandler AlphaChanged;
+        public event EventHandler FocusLost;
+        public event EventHandler FocusGained;
+
+        protected virtual void OnMouseUp(MouseEventArgs e)
+        {
+            if (MouseUp != null) MouseUp.Invoke(this, e);
+        }
+
+        protected virtual void OnMouseDown(MouseEventArgs e)
+        {
+            if (MouseDown != null) MouseDown.Invoke(this, e);
+        }
+
+        protected virtual void OnMouseMove(MouseEventArgs e)
+        {
+            if (MouseMove != null) MouseMove.Invoke(this, e);
+        }
+
+        protected virtual void OnMouseOver(MouseEventArgs e)
+        {
+            if (MouseOver != null) MouseOver.Invoke(this, e);
+        }
+
+        protected virtual void OnMouseOut(MouseEventArgs e)
+        {
+            if (MouseOut != null) MouseOut.Invoke(this, e);
+        }
+
+        protected virtual void OnClick(Event.EventArgs e)
+        {
+            if (Click != null) Click.Invoke(this, e);
+        }
+
+        protected virtual void OnDoubleClick(Event.EventArgs e)
+        {
+            if (DoubleClick != null) DoubleClick.Invoke(this, e);
+        }      
+
+        protected virtual void OnMoveBegin(Event.EventArgs e)
+        {
+            if (MoveBegin != null) MoveBegin.Invoke(this, e);
+        }
+
+        protected virtual void OnMoveEnd(Event.EventArgs e)
+        {
+            if (MoveEnd != null) MoveEnd.Invoke(this, e);
+        }
+
+        protected virtual void OnResizeBegin(Event.EventArgs e)
+        {
+            if (ResizeBegin != null) ResizeBegin.Invoke(this, e);
+        }
+
+        protected virtual void OnResizeEnd(Event.EventArgs e)
+        {
+            if (ResizeEnd != null) ResizeEnd.Invoke(this, e);
+        }
+
+        protected virtual void OnKeyUp(KeyEventArgs e)
+        {
+            if (KeyUp != null) KeyUp.Invoke(this, e);
+        }
+
+        protected virtual void OnKeyDown(KeyEventArgs e)
+        {
+            if (KeyDown != null) KeyDown.Invoke(this, e);
+        }
+
+        protected virtual void OnKeyPress(KeyEventArgs e)
+        {
+            if (KeyPress != null) KeyPress.Invoke(this, e);
+        }
+
+        protected virtual void OnGamePadUp(GamePadEventArgs e)
+        {
+            if (GamePadUp != null) GamePadUp.Invoke(this, e);
+        }
+
+        protected virtual void OnGamePadDown(GamePadEventArgs e)
+        {
+            if (GamePadDown != null) GamePadDown.Invoke(this, e);
+        }
+
+        protected virtual void OnGamePadPress(GamePadEventArgs e)
+        {
+            if (GamePadPress != null) GamePadPress.Invoke(this, e);
+        }
+
+        protected virtual void OnColorChanged(Event.EventArgs e)
+        {
+            if (ColorChanged != null) ColorChanged.Invoke(this, e);
+        }
+
+        protected virtual void OnTextColorChanged(Event.EventArgs e)
+        {
+            if (TextColorChanged != null) TextColorChanged.Invoke(this, e);
+        }
+
+        protected virtual void OnBackColorChanged(Event.EventArgs e)
+        {
+            if (BackColorChanged != null) BackColorChanged.Invoke(this, e);
+        }
+
+        protected virtual void OnTextChanged(Event.EventArgs e)
+        {
+            if (TextChanged != null) TextChanged.Invoke(this, e);
+        }
+
+        protected virtual void OnAnchorChanged(Event.EventArgs e)
+        {
+            if (AnchorChanged != null) AnchorChanged.Invoke(this, e);
+        }
+
+        protected internal virtual void OnSkinChanged(Event.EventArgs e)
+        {
+            if (SkinChanged != null) SkinChanged.Invoke(this, e);
+        }
+
+        protected internal virtual void OnSkinChanging(Event.EventArgs e)
+        {
+            if (SkinChanging != null) SkinChanging.Invoke(this, e);
+        }
+
+        protected virtual void OnParentChanged(Event.EventArgs e)
+        {
+            if (ParentChanged != null) ParentChanged.Invoke(this, e);
+        }
+
+        protected virtual void OnRootChanged(Event.EventArgs e)
+        {
+            if (RootChanged != null) RootChanged.Invoke(this, e);
+        }
+
+        protected virtual void OnVisibleChanged(Event.EventArgs e)
+        {
+            if (VisibleChanged != null) VisibleChanged.Invoke(this, e);
+        }
+
+        protected virtual void OnEnabledChanged(Event.EventArgs e)
+        {
+            if (EnabledChanged != null) EnabledChanged.Invoke(this, e);
+        }
+
+        protected virtual void OnAlphaChanged(Event.EventArgs e)
+        {
+            if (AlphaChanged != null) AlphaChanged.Invoke(this, e);
+        }
+
+        protected virtual void OnFocusLost(Event.EventArgs e)
+        {
+            if (FocusLost != null) FocusLost.Invoke(this, e);
+        }
+  
+        protected virtual void OnFocusGained(Event.EventArgs e)
+        {
+            if (FocusGained != null) FocusGained.Invoke(this, e);
+        }
+
+        protected virtual void OnMousePress(MouseEventArgs e)
+        {
+            if (MousePress != null) MousePress.Invoke(this, e);
+        }
+
+        protected virtual void OnMouseScroll(MouseEventArgs e)
+        {
+            if (MouseScroll != null) MouseScroll.Invoke(this, e);
+        }
 
         #endregion
 
@@ -990,11 +1274,11 @@ namespace UiTesting.Source
 
         public virtual void PropagateEventsTo(Entity other)
         {
-            OnMouseDown += (Entity entity) => { other.OnMouseDown?.Invoke(other); };
+            OnMouseDown2 += (Entity entity) => { other.OnMouseDown2?.Invoke(other); };
             OnMouseReleased += (Entity entity) => { other.OnMouseReleased?.Invoke(other); };
             WhileMouseDown += (Entity entity) => { other.WhileMouseDown?.Invoke(other); };
             WhileMouseHover += (Entity entity) => { other.WhileMouseHover?.Invoke(other); };
-            OnClick += (Entity entity) => { other.OnClick?.Invoke(other); };
+            OnClick2 += (Entity entity) => { other.OnClick2?.Invoke(other); };
             OnValueChange += (Entity entity) => { other.OnValueChange?.Invoke(other); };
             OnMouseEnter += (Entity entity) => { other.OnMouseEnter?.Invoke(other); };
             OnMouseLeave += (Entity entity) => { other.OnMouseLeave?.Invoke(other); };
@@ -1055,6 +1339,8 @@ namespace UiTesting.Source
 
             if(p_size.X == -1) { p_size.X = defaultSize.X; }
             if(p_size.Y == -1) { p_size.Y = defaultSize.Y; }
+
+            Stack.Add(this);
         }
 
         public Vector2 EntityDefaultSize
@@ -1272,6 +1558,21 @@ namespace UiTesting.Source
             return new Rectangle(x, y, width, height);
         }
 
+        public virtual void SendMessage(Message message, Event.EventArgs e)
+        {
+            MessageProcess(message, e);
+        }
+
+        public virtual void Invalidate()
+        {
+            p_Invalidated = true;
+
+            if(p_ParentEntity != null)
+            {
+                p_ParentEntity.Invalidate();
+            }
+        }
+
         public void Dispose()
         {
             throw new NotImplementedException();
@@ -1334,6 +1635,181 @@ namespace UiTesting.Source
 
             return prev;
         }
+
+        protected virtual void MessageProcess(Message message, Event.EventArgs e)
+        {
+            switch (message)
+            {
+                case Message.Click:
+                    {
+                        ClickProcess(e as MouseEventArgs);
+                        break;
+                    }
+                case Message.MouseDown:
+                    {
+                        MouseDownProcess(e as MouseEventArgs);
+                        break;
+                    }
+                case Message.MouseUp:
+                    {
+                        MouseUpProcess(e as MouseEventArgs);
+                        break;
+                    }
+                case Message.MousePress:
+                    {
+                        MousePressProcess(e as MouseEventArgs);
+                        break;
+                    }
+                case Message.MouseScroll:
+                    {
+                        MouseScrollProcess(e as MouseEventArgs);
+                        break;
+                    }
+                case Message.MouseMove:
+                    {
+                        MouseMoveProcess(e as MouseEventArgs);
+                        break;
+                    }
+                case Message.MouseOver:
+                    {
+                        MouseOverProcess(e as MouseEventArgs);
+                        break;
+                    }
+                case Message.MouseOut:
+                    {
+                        MouseOutProcess(e as MouseEventArgs);
+                        break;
+                    }
+                case Message.GamePadDown:
+                    {
+                        GamePadDownProcess(e as GamePadEventArgs);
+                        break;
+                    }
+                case Message.GamePadUp:
+                    {
+                        GamePadUpProcess(e as GamePadEventArgs);
+                        break;
+                    }
+                case Message.GamePadPress:
+                    {
+                        GamePadPressProcess(e as GamePadEventArgs);
+                        break;
+                    }
+                case Message.KeyDown:
+                    {
+                        KeyDownProcess(e as KeyEventArgs);
+                        break;
+                    }
+                case Message.KeyUp:
+                    {
+                        KeyUpProcess(e as KeyEventArgs);
+                        break;
+                    }
+                case Message.KeyPress:
+                    {
+                        KeyPressProcess(e as KeyEventArgs);
+                        break;
+                    }
+            }
+        }
+
+        #region GamePad
+        
+        private void GamePadPressProcess(GamePadEventArgs e)
+        {
+            Invalidate();
+            if (!Suspended) OnGamePadPress(e);
+        }
+
+        private void GamePadUpProcess(GamePadEventArgs e)
+        {
+            Invalidate();
+            
+            if(e.Button == GamePadActions.Press && p_Pressed[(int)e.Button])
+            {
+                p_Pressed[(int)e.Button] = false;
+            }
+
+            if (!Suspended) OnGamePadUp(e);
+        }
+
+        private void GamePadDownProcess(GamePadEventArgs e)
+        {
+            Invalidate();
+
+            //ToolTipOut();
+
+            if(e.Button == GamePadActions.Press && !IsPressed)
+            {
+                p_Pressed[(int)e.Button] = true;
+            }
+
+            if (!Suspended) OnGamePadDown(e);
+        }
+
+        #endregion
+
+        #region Keybroad
+
+        private void KeyPressProcess(KeyEventArgs e)
+        {
+
+        }
+
+        private void KeyDownProcess(KeyEventArgs e)
+        {
+
+        }
+
+        private void KeyUpProcess(KeyEventArgs e)
+        {
+
+        }
+
+        #endregion
+
+        #region Mouse
+
+        private void MouseDownProcess(MouseEventArgs e)
+        {
+
+        }
+
+        private void MouseUpProcess(MouseEventArgs e)
+        {
+
+        }
+
+        private void MousePressProcess(MouseEventArgs e)
+        {
+
+        }
+
+        private void MouseScrollProcess(MouseEventArgs e)
+        {
+
+        }
+
+        private void MouseOverProcess(MouseEventArgs e)
+        {
+
+        }
+
+        private void MouseOutProcess(MouseEventArgs e)
+        {
+
+        }
+
+        private void MouseMoveProcess(MouseEventArgs e)
+        {
+
+        }
+        
+        private void ClickProcess(Event.EventArgs e)
+        {
+
+        }
+        #endregion
 
         #endregion
 

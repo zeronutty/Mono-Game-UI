@@ -50,8 +50,8 @@ namespace UiTesting.Source
             AddChild(p_ScalePlusButton);
             AddChild(p_HeaderText);
 
-            p_ScaleMinusButton.OnClick = (Entity entity) => { LocalScale -= 0.1f; };
-            p_ScalePlusButton.OnClick = (Entity entity) => { LocalScale += 0.1f; };
+            //p_ScaleMinusButton.OnClick = (Entity entity) => { LocalScale -= 0.1f; };
+            //p_ScalePlusButton.OnClick = (Entity entity) => { LocalScale += 0.1f; };
 
             ScaledPadding = new Vector2(5, 5);
 

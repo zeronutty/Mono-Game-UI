@@ -227,14 +227,14 @@ namespace UiTesting.Source
 
                 p_paragraphs.Add(paragraph);
 
-                paragraph.OnClick += (Entity entity) =>
-                {
-                    ParagraphData data = (ParagraphData)entity.AttachedData;
-                    if (!data.list.LockSelection)
-                    {
-                        data.list.Select(data.relativeIndex, true);
-                    }
-                };
+                //paragraph.OnClick += (Entity entity) =>
+                //{
+                //    ParagraphData data = (ParagraphData)entity.AttachedData;
+                //    if (!data.list.LockSelection)
+                //    {
+                //        data.list.Select(data.relativeIndex, true);
+                //    }
+                //};
 
                 paragraph.UpdateDestinationRects();
 

@@ -4,39 +4,37 @@
   <Platform>Windows</Platform>
   <Config />
   <SourceFiles>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/Panel.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/PanelTopBar.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/Cursors/Default_Cursor.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/Cursors/Default_S_BL.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/Cursors/Default_S_BR.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/Cursors/Default_S_Horz.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/Cursors/Default_S_Vert.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/Cursors/Default_S_Dragging.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Fonts/NullFont.spritefont</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Fonts/Pixel FJVerdana 12pt.spritefont</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/Tan.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/tan_inlay.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/tan_pressed.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/ExitButton.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/MaximizeButton.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/MinimizeButton.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/ScaleMinus.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/ScalePlus.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Videos/Test.mp4</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Videos/My Movie.wmv</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/UpArrow.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/DownArrow.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/WhiteTexture.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Fonts/BitStreamRoman.spritefont</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/NullTexture.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/CircleButton.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/CheckBoxMarked.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/CheckBoxUnMarked.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/TV_LeftArrow.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/TV_RightArrow.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/TV_UpArrow.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/TV_DownArrow.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/Caret.png</File>
-    <File>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Fonts/Arial 7pt.spritefont</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/Panel.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/PanelTopBar.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/Cursors/Default_Cursor.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/Cursors/Default_S_BL.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/Cursors/Default_S_BR.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/Cursors/Default_S_Horz.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/Cursors/Default_S_Vert.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/Cursors/Default_S_Dragging.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Fonts/NullFont.spritefont</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Fonts/Pixel FJVerdana 12pt.spritefont</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/Tan.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/tan_inlay.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/tan_pressed.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/ExitButton.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/MaximizeButton.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/MinimizeButton.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/ScaleMinus.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/ScalePlus.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/UpArrow.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/DownArrow.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/WhiteTexture.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Fonts/BitStreamRoman.spritefont</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/NullTexture.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/CircleButton.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/CheckBoxMarked.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/CheckBoxUnMarked.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/TV_LeftArrow.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/TV_RightArrow.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/TV_UpArrow.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/TV_DownArrow.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/Caret.png</File>
+    <File>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Fonts/Arial 7pt.spritefont</File>
   </SourceFiles>
 </SourceFileCollection>

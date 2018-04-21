@@ -45,7 +45,6 @@ namespace UiTesting.Source.UI.Rendering
             RasterizerState.MultiSampleAntiAlias = RasterizerState.CullNone.MultiSampleAntiAlias;
             RasterizerState.ScissorTestEnable = RasterizerState.CullNone.ScissorTestEnable;
             RasterizerState.SlopeScaleDepthBias = RasterizerState.CullNone.SlopeScaleDepthBias;
-
             RasterizerState.ScissorTestEnable = true;
 
             SamplerState = new SamplerState();
@@ -83,9 +82,9 @@ namespace UiTesting.Source.UI.Rendering
 
         #region Constructors
 
-        public UiRenderer(UiManager2 uiManager2) : base(uiManager2)
+        public UiRenderer(UiManager uiManager) : base(uiManager)
         {
-            p_sb = new SpriteBatch(uiManager2.GraphicsDevice);
+            //p_sb = new SpriteBatch(uiManager.GraphicsDevice);
         }
 
         #endregion

@@ -80,7 +80,7 @@ namespace UiTesting.Source.Event
         }
     }
 
-    public class GamePadEventArgs
+    public class GamePadEventArgs : EventArgs
     {
         public PlayerIndex PlayerIndex = PlayerIndex.One;
         public GamePadState State = new GamePadState();

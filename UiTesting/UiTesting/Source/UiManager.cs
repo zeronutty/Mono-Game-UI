@@ -9,6 +9,9 @@ using UiTesting.Source.Input;
 using UiTesting.Source.Forms;
 using UiTesting.Source.Logging;
 using Microsoft.Xna.Framework.Input;
+using UiTesting.Source.Event;
+using UiTesting.Source.Data;
+using System.Media;
 
 namespace UiTesting.Source
 {
@@ -30,6 +33,13 @@ namespace UiTesting.Source
 
     public class UiManager
     {
+        private struct ControlStates
+        {
+            public Entity[] Buttons;
+            public int Click;
+            public Entity Over;
+        }
+
         #region Singleton
         private static UiManager p_Active;
         #endregion
@@ -82,6 +92,18 @@ namespace UiTesting.Source
         public static int NumberOfUIEntities = 0;
 
         private ConsoleTextWriter ConsoleTextWriter;
+
+        private InputSystem p_Input = null;
+        private bool p_InputEnabled = true;
+
+        private List<Entity> p_UiEntities = new List<Entity>();
+        private List<Entity> p_OrderList = new List<Entity>();
+
+        private Entity p_FocusedEntity = null;
+
+        private ControlStates p_States = new ControlStates();
+
+        private bool p_AutoUnFocus = true;
         #endregion
 
         #region Properties
@@ -110,6 +132,56 @@ namespace UiTesting.Source
         public bool UseRenderTarget { get { return p_UseRenderTarget; } set { p_UseRenderTarget = value; DisposeRenderTarget(); } }
 
         public RenderTarget2D RenderTarget { get { return p_renderTarget; } }
+
+        public InputSystem Input { get { return p_Input; } set { p_Input = value; } }
+
+        public bool InputEnabled { get { return p_InputEnabled; } set { p_InputEnabled = value; } }
+
+        public List<Entity> UiEntities { get { return p_UiEntities; } }
+
+        public List<Entity> OrderList { get { return p_OrderList; } }
+
+        public Entity FocusedControl
+        {
+            get { return p_FocusedEntity; }
+            internal set
+            {
+                if (value != null && value.Visible && !value.IsLocked())
+                {
+                    if (value != null && value.CanFocus)
+                    {
+                        if (p_FocusedEntity == null || (p_FocusedEntity != null && value.Root != p_FocusedEntity.Root) || !value.IsRoot)
+                        {
+                            if (p_FocusedEntity != null && p_FocusedEntity != value)
+                            {
+                                p_FocusedEntity.IsFocused = false;
+                            }
+                            p_FocusedEntity = value;
+                        }
+                    }
+                    else if (value != null && !value.CanFocus)
+                    {
+                        if (p_FocusedEntity != null && value.Root != p_FocusedEntity.Root)
+                        {
+                            if (p_FocusedEntity != value.Root)
+                            {
+                                p_FocusedEntity.IsFocused = false;
+                            }
+                            p_FocusedEntity = value.Root;
+                        }
+                        else if (p_FocusedEntity == null)
+                        {
+                            p_FocusedEntity = value.Root;
+                        }
+                    }
+                    BringToFront(value.Root);
+                }
+                else if (value == null)
+                {
+                    p_FocusedEntity = value;
+                }
+            }
+        }
         #endregion
 
         #region Events
@@ -197,10 +269,8 @@ namespace UiTesting.Source
             p_GraphicsDeviceManager = graphicsDeviceManager;
             InputUtils.Initialize();
             fps = new FPSCounter();
-
             
             p_Game = game;
-
 
             p_ScreenHeight = p_GraphicsDeviceManager.PreferredBackBufferHeight;
             p_ScreenWidth = p_GraphicsDeviceManager.PreferredBackBufferWidth;             
@@ -306,23 +376,6 @@ namespace UiTesting.Source
             p_CursorOffset = offset ?? Point.Zero;
         }
 
-        public void DrawCursor(SpriteBatch spriteBatch)
-        {
-            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState, SamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise);
-
-            float cursorSize = CursorScale * GlobalScale * ((float)p_CursorWidth / (float)p_CursorTexture.Width);
-
-            Vector2 cursorPos = InputUtils.GetMousePosition();
-
-            spriteBatch.Draw(p_CursorTexture, 
-                new Rectangle(
-                    (int)(cursorPos.X + p_CursorOffset.X + cursorSize), (int)(cursorPos.Y + p_CursorOffset.Y + cursorSize),
-                    (int)(p_CursorTexture.Width * cursorSize), (int)(p_CursorTexture.Height * cursorSize)), 
-            Color.White);
-
-            spriteBatch.End();
-        }
-
         public void AddChildToRoot(Entity child)
         {
             Root.AddChild(child);
@@ -331,6 +384,84 @@ namespace UiTesting.Source
         public void RemoveChildFromRoot(Entity child)
         {
             Root.RemoveChild(child);
+        }
+
+        public virtual void AddEntity(Entity entity)
+        {
+            if(entity != null)
+            {
+                UiEntities.Add(entity);
+                entity.UiManager = this;
+                entity.Parent = null;
+                if (FocusedControl == null) entity.IsFocused = true;
+            }
+        }
+
+        public virtual void RemoveEntity(Entity entity)
+        {
+            if(entity != null)
+            {
+                if (entity.IsFocused) entity.IsFocused = false;
+                UiEntities.Remove(entity);
+            }
+        }
+
+        public virtual void BringToFront(Entity entity)
+        {
+            if (entity != null && !entity.StayOnBack)
+            {
+                List<Entity> list = (entity.Parent == null) ? UiEntities : entity.Parent.Children;
+                if(list.Contains(entity))
+                {
+                    list.Remove(entity);
+                    if(!entity.StayOnTop)
+                    {
+                        int pos = list.Count;
+                        for(int i = list.Count - 1; i >= 0; i--)
+                        {
+                            if(!list[i].StayOnTop)
+                            {
+                                break;
+                            }
+                            pos = i;
+                        }
+                        list.Insert(pos, entity);
+                    }
+                    else
+                    {
+                        list.Add(entity);
+                    }
+                }
+            }
+        }
+
+        public virtual void SendToBack(Entity entity)
+        {
+            if (entity != null && !entity.StayOnTop)
+            {
+                List<Entity> list = (entity.Parent == null) ? UiEntities : entity.Parent.Children;
+                if (list.Contains(entity))
+                {
+                    list.Remove(entity);
+                    if (!entity.StayOnBack)
+                    {
+                        int pos = list.Count;
+                        for (int i = 0; i < list.Count; i++)
+                        {
+                            if (!list[i].StayOnBack)
+                            {
+                                break;
+                            }
+                            pos = i;
+                        }
+                        list.Insert(pos, entity);
+                    }
+                    else
+                    {
+                        list.Insert(0, entity);
+                    }
+                }
+            }
         }
 
         public void OnWindowResize()
@@ -439,6 +570,23 @@ namespace UiTesting.Source
             }
         }
 
+        public void DrawCursor(SpriteBatch spriteBatch)
+        {
+            spriteBatch.Begin(SpriteSortMode.Deferred, BlendState, SamplerState, DepthStencilState.None, RasterizerState.CullCounterClockwise);
+
+            float cursorSize = CursorScale * GlobalScale * ((float)p_CursorWidth / (float)p_CursorTexture.Width);
+
+            Vector2 cursorPos = InputUtils.GetMousePosition();
+
+            spriteBatch.Draw(p_CursorTexture,
+                new Rectangle(
+                    (int)(cursorPos.X + p_CursorOffset.X + cursorSize), (int)(cursorPos.Y + p_CursorOffset.Y + cursorSize),
+                    (int)(p_CursorTexture.Width * cursorSize), (int)(p_CursorTexture.Height * cursorSize)),
+            Color.White);
+
+            spriteBatch.End();
+        }
+
         public void DrawMainRenderTarget(SpriteBatch spriteBatch)
         {
             if (RenderTarget != null && !RenderTarget.IsDisposed)
@@ -496,6 +644,497 @@ namespace UiTesting.Source
         {
             DisposeRenderTarget();
         }
+
+        #region Input
+
+        private bool CheckOrder(Entity entity, Point pos)
+        {
+            if (!CheckPosition(entity, pos)) return false;
+
+            for(int i = OrderList.Count - 1; i > OrderList.IndexOf(entity); i--)
+            {
+                Entity en = OrderList[i];
+
+                if(CheckPosition(en, pos) && CheckParent(en, pos))
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private bool CheckState(Entity entity)
+        {
+            return (entity != null && entity.IsVisible() && Root != null);
+        }
+
+        private bool CheckParent(Entity entity, Point pos)
+        {
+            if(entity.Parent != null)
+            {
+                Entity parent = entity.Parent;
+                Entity root = entity.Root;
+
+                Rectangle pr = new Rectangle(parent.p_DrawArea.Left,
+                                             parent.p_DrawArea.Top,
+                                             parent.p_DrawArea.Width,
+                                             parent.p_DrawArea.Height);
+
+                Rectangle rr = new Rectangle(root.p_DrawArea.Left,
+                                             root.p_DrawArea.Top,
+                                             root.p_DrawArea.Width,
+                                             root.p_DrawArea.Height);
+
+                return (rr.Contains(pos) && pr.Contains(pos));
+            }
+
+            return true;
+        }
+
+        private bool CheckPosition(Entity entity, Point pos)
+        {
+            return (entity.p_DrawArea.Left <= pos.X &&
+                    entity.p_DrawArea.Top <= pos.Y &&
+                    entity.p_DrawArea.Left + entity.p_DrawArea.Width >= pos.X &&
+                    entity.p_DrawArea.Top + entity.p_DrawArea.Height >= pos.Y &&
+                    CheckParent(entity, pos));
+        }
+
+        private bool CheckButtons(int index)
+        {
+            for(int i = 0; i < p_States.Buttons.Length; i++)
+            {
+                if (i == index) continue;
+                if (p_States.Buttons[i] != null) return false;
+            }
+
+            return true;
+        }
+
+        private void TabNextEntity(Entity entity)
+        {
+            int start = OrderList.IndexOf(entity);
+            int i = start;
+
+            do
+            {
+                if (i < OrderList.Count - 1) i += 1;
+                else i = 0;
+            }
+            while ((OrderList[i].Root != entity.Root || !OrderList[i].CanFocus || OrderList[i].IsRoot) && i != start);
+            OrderList[i].IsFocused = true;
+        }
+
+        private void TabPrevEntity(Entity entity)
+        {
+
+            int start = OrderList.IndexOf(entity);
+            int i = start;
+
+            do
+            {
+                if (i > 0) i -= 1;
+                else i = OrderList.Count - 1;
+            }
+            while ((OrderList[i].Root != entity.Root || !OrderList[i].CanFocus || OrderList[i].IsRoot) && i != start);
+            OrderList[i].IsFocused = true;
+        }
+
+        private void ProcessArrows(Entity entity, KeyEventArgs kbe, GamePadEventArgs gpe)
+        {
+            Entity c = entity;
+            if (c.Parent != null && c.Parent.Children != null)
+            {
+                int index = -1;
+
+                if ((kbe.Key == Keys.Left && !kbe.Handled) ||
+                    (gpe.Button == c.GamePadActions.Left && !gpe.Handled))
+                {
+                    int miny = int.MaxValue;
+                    int minx = int.MinValue;
+                    for (int i = 0; i < (c.Parent.Children).Count; i++)
+                    {
+                        Entity cx = (c.Parent.Children)[i];
+                        if (cx == c || !cx.Visible || !cx.Enabled || cx.Passive || !cx.CanFocus) continue;
+
+                        int cay = (int)(c.Top + (c.Height / 2));
+                        int cby = (int)(cx.Top + (cx.Height / 2));
+
+                        if (Math.Abs(cay - cby) <= miny && (cx.Left + cx.Width) >= minx && (cx.Left + cx.Width) <= c.Left)
+                        {
+                            miny = Math.Abs(cay - cby);
+                            minx = cx.Left + cx.Width;
+                            index = i;
+                        }
+                    }
+                }
+                else if ((kbe.Key == Keys.Right && !kbe.Handled) ||
+                         (gpe.Button == c.GamePadActions.Right && !gpe.Handled))
+                {
+                    int miny = int.MaxValue;
+                    int minx = int.MaxValue;
+                    for (int i = 0; i < (c.Parent.Children).Count; i++)
+                    {
+                        Entity cx = (c.Parent.Children)[i];
+                        if (cx == c || !cx.Visible || !cx.Enabled || cx.Passive || !cx.CanFocus) continue;
+
+                        int cay = (int)(c.Top + (c.Height / 2));
+                        int cby = (int)(cx.Top + (cx.Height / 2));
+
+                        if (Math.Abs(cay - cby) <= miny && cx.Left <= minx && cx.Left >= (c.Left + c.Width))
+                        {
+                            miny = Math.Abs(cay - cby);
+                            minx = cx.Left;
+                            index = i;
+                        }
+                    }
+                }
+                else if ((kbe.Key == Keys.Up && !kbe.Handled) ||
+                         (gpe.Button == c.GamePadActions.Up && !gpe.Handled))
+                {
+                    int miny = int.MinValue;
+                    int minx = int.MaxValue;
+                    for (int i = 0; i < (c.Parent.Children).Count; i++)
+                    {
+                        Entity cx = (c.Parent.Children)[i];
+                        if (cx == c || !cx.Visible || !cx.Enabled || cx.Passive || !cx.CanFocus) continue;
+
+                        int cax = (int)(c.Left + (c.Width / 2));
+                        int cbx = (int)(cx.Left + (cx.Width / 2));
+
+                        if (Math.Abs(cax - cbx) <= minx && (cx.Top + cx.Height) >= miny && (cx.Top + cx.Height) <= c.Top)
+                        {
+                            minx = Math.Abs(cax - cbx);
+                            miny = cx.Top + cx.Height;
+                            index = i;
+                        }
+                    }
+                }
+                else if ((kbe.Key == Keys.Down && !kbe.Handled) ||
+                         (gpe.Button == c.GamePadActions.Down && !gpe.Handled))
+                {
+                    int miny = int.MaxValue;
+                    int minx = int.MaxValue;
+                    for (int i = 0; i < (c.Parent.Children).Count; i++)
+                    {
+                        Entity cx = (c.Parent.Children)[i];
+                        if (cx == c || !cx.Visible || !cx.Enabled || cx.Passive || !cx.CanFocus) continue;
+
+                        int cax = (int)(c.Left + (c.Width / 2));
+                        int cbx = (int)(cx.Left + (cx.Width / 2));
+
+                        if (Math.Abs(cax - cbx) <= minx && cx.Top <= miny && cx.Top >= (c.Top + c.Height))
+                        {
+                            minx = Math.Abs(cax - cbx);
+                            miny = cx.Top;
+                            index = i;
+                        }
+                    }
+                }
+
+                if (index != -1)
+                {
+                    (c.Parent.Children)[index].IsFocused = true;
+                    kbe.Handled = true;
+                    gpe.Handled = true;
+                }
+            }
+        }
+
+        #region Mouse
+        private void MouseDownProcess(object sender, MouseEventArgs e)
+        {
+            List<Entity> c = new List<Entity>();
+            c.AddRange(OrderList);
+
+            if(p_AutoUnFocus && p_FocusedEntity != null && p_FocusedEntity.Root != Root)
+            {
+                bool hit = false;
+
+                foreach(Entity en in UiEntities)
+                {
+                    if(en.p_DrawArea.Contains(e.Position))
+                    {
+                        hit = true;
+                        break;
+                    }
+                }
+                if(!hit)
+                {
+                    for(int i = 0; i < Entity.Stack.Count; i++)
+                    {
+                        if(Entity.Stack[i].Visible && Entity.Stack[i].p_DrawArea.Contains(e.Position))
+                        {
+                            hit = true;
+                            break;
+                        }
+                    }
+                }
+                if (!hit) p_FocusedEntity.IsFocused = false;
+            }
+
+            for(int i = c.Count - 1; i >= 0; i--)
+            {
+                if (CheckState(c[i]) && CheckPosition(c[i], e.Position))
+                {
+                    p_States.Buttons[(int)e.Button] = c[i];
+                    c[i].SendMessage(Message.MouseDown, e);
+
+                    if (p_States.Click == -1)
+                    {
+                        p_States.Click = (int)e.Button;
+
+                        if (FocusedControl != null)
+                        {
+                            FocusedControl.MarkasRectUpdate();
+                        }
+                        c[i].IsFocused = true;
+                    }
+                    return;
+                }
+            }
+
+            if(Root != null)
+            {
+                SystemSounds.Beep.Play();
+            }
+        }
+
+        private void MouseUpProcess(object sender, MouseEventArgs e)
+        {
+            Entity en = p_States.Buttons[(int)e.Button];
+            if(en != null)
+            {
+                if(CheckPosition(en,e.Position) && CheckOrder(en, e.Position) && p_States.Click == (int)e.Button && CheckButtons((int)e.Button))
+                {
+                    en.SendMessage(Message.Click, e);
+                }
+                p_States.Click = -1;
+                en.SendMessage(Message.MouseUp, e);
+                p_States.Buttons[(int)e.Button] = null;
+                MouseMoveProcess(sender, e);
+            }
+        }
+
+        private void MousePressProcess(object sender, MouseEventArgs e)
+        {
+            Entity en = p_States.Buttons[(int)e.Button];
+            if (en != null)
+            {
+                if(CheckPosition(en, e.Position))
+                {
+                    en.SendMessage(Message.MousePress, e);
+                }
+            }
+        }
+
+        private void MouseMoveProcess(object sender, MouseEventArgs e)
+        {
+            List<Entity> list = new List<Entity>();
+            list.AddRange(OrderList);
+
+            for(int i = list.Count - 1; i >= 0; i--)
+            {
+                bool chpos = CheckPosition(list[i], e.Position);
+                bool chsta = CheckState(list[i]);
+
+                if(chsta && ((chpos && p_States.Over == list[i]) || (p_States.Buttons[(int)e.Button] == list[i])))
+                {
+                    list[i].SendMessage(Message.MouseMove, e);
+                    break;
+                }
+            }
+
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                bool chpos = CheckPosition(list[i], e.Position);
+                bool chsta = CheckState(list[i]);
+
+                if (chsta && !chpos && p_States.Over == list[i] && p_States.Buttons[(int)e.Button] == null)
+                {
+                    p_States.Over = null;
+                    list[i].SendMessage(Message.MouseOut, e);
+                    break;
+                }
+            }
+
+            for (int i = list.Count - 1; i >= 0; i--)
+            {
+                bool chpos = CheckPosition(list[i], e.Position);
+                bool chsta = CheckState(list[i]);
+
+                if (chsta && chpos && p_States.Over != list[i] && p_States.Buttons[(int)e.Button] == null)
+                {
+                    if (p_States.Over != null)
+                    {
+                        p_States.Over.SendMessage(Message.MouseOut, e);
+                    }
+
+                    p_States.Over = list[i];
+                    list[i].SendMessage(Message.MouseOut, e);
+                    break;
+                }
+                else if (p_States.Over == list[i]) break;
+            }
+        }
+
+        private void MouseScrollProcess(object sender, MouseEventArgs e)
+        {
+            List<Entity> list = new List<Entity>();
+            list.AddRange(OrderList);
+
+            for(int i = list.Count - 1; i >= 0; i--)
+            {
+                bool chpos = CheckPosition(list[i], e.Position);
+                bool chsta = CheckState(list[i]);
+
+                if(chsta && chpos && p_States.Over == list[i])
+                {
+                    list[i].SendMessage(Message.MouseScroll, e);
+                    break;
+                }
+            }
+        }
+        #endregion
+
+        #region GamePad
+
+        private void GamePadDownProcess(object sender, GamePadEventArgs e)
+        {
+            Entity en = FocusedControl;
+
+            if(en != null && CheckState(en))
+            {
+                if(p_States.Click == -1)
+                {
+                    p_States.Click = (int)e.Button;
+                }
+                p_States.Buttons[(int)e.Button] = en;
+                en.SendMessage(Message.GamePadDown, e);
+
+                if(e.Button == en.GamePadActions.Click)
+                {
+                    en.SendMessage(Message.Click, new MouseEventArgs(new MouseState(), MouseButtons.None, Point.Zero));
+                }
+            }
+        }
+
+        private void GamePadUpProcess(object sender, GamePadEventArgs e)
+        {
+            Entity en = p_States.Buttons[(int)e.Button];
+
+            if(en != null)
+            {
+                if(e.Button == en.GamePadActions.Press)
+                {
+                    en.SendMessage(Message.Click, new MouseEventArgs(new MouseState(), MouseButtons.None, Point.Zero));
+                }
+                p_States.Click = -1;
+                p_States.Buttons[(int)e.Button] = null;
+                en.SendMessage(Message.GamePadUp, e);
+            }
+        }
+
+        private void GamePadPressProcess(object sender, GamePadEventArgs e)
+        {
+            Entity en = p_States.Buttons[(int)e.Button];
+            if(en != null)
+            {
+                en.SendMessage(Message.GamePadPress, e);
+
+                if ((e.Button == en.GamePadActions.Right ||
+                   e.Button == en.GamePadActions.Left ||
+                   e.Button == en.GamePadActions.Up ||
+                   e.Button == en.GamePadActions.Down) && !e.Handled && CheckButtons((int)e.Button))
+                {
+                    ProcessArrows(en, new KeyEventArgs(), e);
+                    GamePadDownProcess(sender, e);
+                }
+                else if(e.Button == en.GamePadActions.NextControl && !e.Handled && CheckButtons((int)e.Button))
+                {
+                    TabNextEntity(en);
+                    GamePadDownProcess(sender, e);
+                }
+                else if(e.Button == en.GamePadActions.PrevControl && !e.Handled && CheckButtons((int)e.Button))
+                {
+                    TabPrevEntity(en);
+                    GamePadDownProcess(sender, e);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Keybroad
+
+        private void KeyDownProcess(object sender, KeyEventArgs e)
+        {
+            Entity en = FocusedControl;
+
+            if(en != null && CheckState(en))
+            {
+                if(p_States.Click == -1)
+                {
+                    p_States.Click = (int)MouseButtons.None;
+                }
+                p_States.Buttons[(int)MouseButtons.None] = en;
+                en.SendMessage(Message.KeyDown, e);
+
+                if(e.Key == Keys.Enter)
+                {
+                    en.SendMessage(Message.Click, new MouseEventArgs(new MouseState(), MouseButtons.None, Point.Zero));
+                }
+            }
+        }
+
+        private void KeyUpProcess(object sender, KeyEventArgs e)
+        {
+            Entity en = p_States.Buttons[(int)MouseButtons.None];
+
+            if(en != null)
+            {
+                if(e.Key == Keys.Space)
+                {
+                    en.SendMessage(Message.Click, new MouseEventArgs(new MouseState(), MouseButtons.None, Point.Zero));
+                }
+                p_States.Click = -1;
+                p_States.Buttons[(int)MouseButtons.None] = null;
+                en.SendMessage(Message.KeyUp, e);
+            }
+        }
+
+        private void KeyPressProcess(object sender, KeyEventArgs e)
+        {
+            Entity en = p_States.Buttons[(int)MouseButtons.None];
+            if(en != null)
+            {
+                en.SendMessage(Message.KeyPress, e);
+
+                if ((e.Key == Keys.Right ||
+                   e.Key == Keys.Left ||
+                   e.Key == Keys.Up ||
+                   e.Key == Keys.Down) && !e.Handled && CheckButtons((int)MouseButtons.None))
+                {
+                    ProcessArrows(en, e, new GamePadEventArgs(PlayerIndex.One));
+                    KeyDownProcess(sender, e);
+                }
+                else if (e.Key == Keys.Tab && !e.Shift && !e.Handled && CheckButtons((int)MouseButtons.None))
+                {
+                    TabNextEntity(en);
+                    KeyDownProcess(sender, e);
+                }
+                else if (e.Key == Keys.Tab && e.Shift && !e.Handled && CheckButtons((int)MouseButtons.None))
+                {
+                    TabPrevEntity(en);
+                    KeyDownProcess(sender, e);
+                }
+            }
+        }
+
+        #endregion
+
+        #endregion
 
         #endregion
     }

@@ -219,16 +219,6 @@
 /processorParam:TextureFormat=Color
 /build:Textures/ScalePlus.png
 
-#begin Videos/Test.mp4
-/importer:H264Importer
-/processor:VideoProcessor
-/build:Videos/Test.mp4
-
-#begin Videos/My Movie.wmv
-/importer:WmvImporter
-/processor:VideoProcessor
-/build:Videos/My Movie.wmv
-
 #begin Textures/UpArrow.png
 /importer:TextureImporter
 /processor:TextureProcessor

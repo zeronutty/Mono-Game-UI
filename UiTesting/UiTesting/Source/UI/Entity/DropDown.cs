@@ -120,17 +120,17 @@ namespace UiTesting.Source
                 p_SelectedTextParagraph.Text = (SelectedValue ?? DefaultText);
             };
 
-            p_SelectList.OnClick = (Entity entity) =>
-            {
-                ListVisible = false;
-            };
+            //p_SelectList.OnClick = (Entity entity) =>
+            //{
+            //    ListVisible = false;
+            //};
 
             p_SelectList.Visible = false;
 
-            p_SelectedTextPanel.OnClick = (Entity self) =>
-            {
-                ListVisible = !ListVisible;
-            };
+            //p_SelectedTextPanel.OnClick = (Entity self) =>
+            //{
+            //    ListVisible = !ListVisible;
+            //};
 
             p_SelectedTextParagraph.Text = (SelectedValue ?? DefaultText);
 

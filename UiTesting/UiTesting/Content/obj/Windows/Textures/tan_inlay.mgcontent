@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PipelineBuildEvent xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <SourceFile>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/Textures/tan_inlay.png</SourceFile>
+  <SourceFile>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/Textures/tan_inlay.png</SourceFile>
   <SourceTime>2015-03-27T10:40:57.8371169+00:00</SourceTime>
-  <DestFile>C:/Users/Steven/Documents/Visual Studio 2017/Projects/UiTesting/UiTesting/Content/bin/Windows/Textures/tan_inlay.xnb</DestFile>
-  <DestTime>2018-03-29T16:05:57.2703686+01:00</DestTime>
+  <DestFile>C:/Users/Steven/Documents/GitHub/Mono-Game-UI/UiTesting/UiTesting/Content/bin/Windows/Textures/tan_inlay.xnb</DestFile>
+  <DestTime>2018-04-21T08:45:43.9221641+01:00</DestTime>
   <Importer>TextureImporter</Importer>
   <ImporterTime>2017-03-01T15:05:36+00:00</ImporterTime>
   <Processor>TextureProcessor</Processor>

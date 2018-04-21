@@ -63,3 +63,68 @@ C:\Users\Steven\Documents\Visual Studio 2017\Projects\UiTesting\UiTesting\bin\Wi
 C:\Users\Steven\Documents\Visual Studio 2017\Projects\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Fonts\Arial 7pt.xnb
 C:\Users\Steven\Documents\Visual Studio 2017\Projects\UiTesting\UiTesting\bin\Windows\x86\Debug\MonoGame.Framework.Net.dll
 C:\Users\Steven\Documents\Visual Studio 2017\Projects\UiTesting\UiTesting\bin\Windows\x86\Debug\MonoGame.Framework.Net.xml
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\obj\x86\Debug\UiTesting.csprojResolveAssemblyReference.cache
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\obj\x86\Debug\UiTesting.Source.Forms.PropertiesPanel.resources
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\obj\x86\Debug\UiTesting.csproj.GenerateResource.Cache
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\obj\x86\Debug\UiTesting.csproj.CoreCompileInputs.cache
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\obj\x86\Debug\UiTesting.exe
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\obj\x86\Debug\UiTesting.pdb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\Panel.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Videos\My Movie.wmv
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Videos\My Movie.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Videos\Test.mp4
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Videos\Test.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\debugBox.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\Cursors\Default_Cursor.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\Cursors\Default_S_BL.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\Cursors\Default_S_BR.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\Cursors\Default_S_Dragging.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\Cursors\Default_S_Horz.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\Cursors\Default_S_Vert.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\Caret.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\CheckBoxMarked.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\CheckBoxUnMarked.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\CircleButton.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\DownArrow.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\ExitButton.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\MaximizeButton.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\MinimizeButton.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\NullTexture.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\PanelTopBar.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\ScaleMinus.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\ScalePlus.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\Tan.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\tan_inlay.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\tan_pressed.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\TV_DownArrow.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\TV_LeftArrow.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\TV_RightArrow.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\TV_UpArrow.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\UpArrow.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Textures\WhiteTexture.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Fonts\Arial 7pt.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Fonts\BitStreamRoman.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Fonts\NullFont.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\Content\Fonts\Pixel FJVerdana 12pt.xnb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\UiTesting.exe
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\UiTesting.pdb
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\MonoGame.Framework.dll
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\MonoGame.Framework.Net.dll
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\SharpDX.MediaFoundation.dll
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\SharpDX.dll
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\SharpDX.XAudio2.dll
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\SharpDX.DXGI.dll
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\SharpDX.Direct3D11.dll
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\SharpDX.Direct2D1.dll
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\SharpDX.XInput.dll
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\SharpDX.Direct3D9.dll
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\MonoGame.Framework.xml
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\MonoGame.Framework.Net.xml
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\SharpDX.MediaFoundation.xml
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\SharpDX.xml
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\SharpDX.XAudio2.xml
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\SharpDX.DXGI.xml
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\SharpDX.Direct3D11.xml
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\SharpDX.Direct2D1.xml
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\SharpDX.XInput.xml
+C:\Users\Steven\Documents\GitHub\Mono-Game-UI\UiTesting\UiTesting\bin\Windows\x86\Debug\SharpDX.Direct3D9.xml

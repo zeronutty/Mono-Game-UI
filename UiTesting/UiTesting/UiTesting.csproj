@@ -67,6 +67,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Source\ContentManager\ArchiveManager.cs" />
     <Compile Include="Source\Data\SpritesData.cs" />
+    <Compile Include="Source\Data\Types.cs" />
     <Compile Include="Source\Event\Delegates.cs" />
     <Compile Include="Source\Event\EventArgs.cs" />
     <Compile Include="Source\Input\InputSystem.cs" />
@@ -74,7 +75,6 @@
     <Compile Include="Source\Inventory\Item.cs" />
     <Compile Include="Source\Logging\Logger.cs" />
     <Compile Include="Source\Logging\LogHelper.cs" />
-    <Compile Include="Source\UiManager2.cs" />
     <Compile Include="Source\UI\Components\Component.cs" />
     <Compile Include="Source\UI\Components\Disposable.cs" />
     <Compile Include="Source\UI\Entity\Button.cs" />
